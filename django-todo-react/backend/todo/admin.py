@@ -1,9 +1,9 @@
 from django.contrib import admin
-from .models import Todo
+from .models import Registerkrapin
 
 class TodoAdmin(admin.ModelAdmin):
-    list_display = ('title', 'description', 'completed')
+    list_display = ('firstname', 'profession', 'idnumber', 'dob', 'mobilenumber', 'town', 'county', 'box')
 
 # Register your models here.
 
-admin.site.register(Todo, TodoAdmin)
+admin.site.register(Registerkrapin, TodoAdmin)

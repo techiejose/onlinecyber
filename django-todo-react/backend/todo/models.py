@@ -1,10 +1,17 @@
 from django.db import models
 
 # Create your models here.
-class Todo(models.Model):
-    title = models.CharField(max_length=120)
-    description = models.TextField()
-    completed = models.BooleanField(default=False)
+class Registerkrapin(models.Model):
+    firstname = models.CharField(max_length=30)
+    profession = models.CharField(max_length=30)
+    idnumber = models.IntegerField()
+    dob= models.DateField()
+    mobilenumber = models.IntegerField()
+    town = models.CharField(max_length=20)
+    county = models.CharField(max_length=20)
+    box = models.CharField(max_length=10)
+
+
 
     def _str_(self):
-        return self.title
+        return self.firstname
