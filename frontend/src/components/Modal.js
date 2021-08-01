@@ -1,23 +1,29 @@
 import React, { Component } from "react";
 import {
   Button,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
   Form,
   FormGroup,
   Input,
   Label,
 } from "reactstrap";
+import axios from "axios";
 
 export default class CustomModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeItem: this.props.activeItem,
-    };
-  }
+      activeItem: {
+        names: "",
+        profession: "",
+        idno: "",
+        dob: "",
+        box: "",
+        county: "",
+        town: "",
+        mobile: ""
+        
+      }
+  }};
 
   handleChange = (e) => {
     let { name, value } = e.target;
@@ -27,62 +33,127 @@ export default class CustomModal extends Component {
     }
 
     const activeItem = { ...this.state.activeItem, [name]: value };
-
     this.setState({ activeItem });
+
+    
   };
-
+  refreshList = () => {
+    axios
+      .get("/api/todos/")
+      .then((res) => this.setState({ todoList: res.data }))
+      .catch((err) => console.log(err));
+  };
+  handleSubmit = (item) => {
+      
+    axios
+      .post("/api/todos/", item)
+      .then((res) => this.refreshList());
+  };
   render() {
-    const { toggle, onSave } = this.props;
-
     return (
-      <Modal isOpen={true} toggle={toggle}>
-        <ModalHeader toggle={toggle}>Todo Item</ModalHeader>
-        <ModalBody>
+      <div className="col-lg-4 mr-auto pin">
+         <h4>KRA Pin</h4>  
+         <p>
+         fill yor details in the form below, send Ksh 200 and we will process yor request once we receive 
+         yor payment</p>
           <Form>
             <FormGroup>
-              <Label for="todo-title">Title</Label>
+              <Label for="todo-title">Your Names</Label>
               <Input
                 type="text"
                 id="todo-title"
-                name="title"
-                value={this.state.activeItem.title}
+                name="names"
+                value={this.state.activeItem.names}
                 onChange={this.handleChange}
                 placeholder="Enter Todo Title"
               />
             </FormGroup>
             <FormGroup>
-              <Label for="todo-description">Description</Label>
+              <Label for="todo-description">Your Profession</Label>
               <Input
                 type="text"
                 id="todo-description"
-                name="description"
-                value={this.state.activeItem.description}
+                name="profession"
+                value={this.state.activeItem.profession}
                 onChange={this.handleChange}
                 placeholder="Enter Todo description"
               />
             </FormGroup>
-            <FormGroup check>
-              <Label check>
-                <Input
-                  type="checkbox"
-                  name="completed"
-                  checked={this.state.activeItem.completed}
-                  onChange={this.handleChange}
-                />
-                Completed
-              </Label>
+            <FormGroup>
+              <Label for="todo-id">Your Id No.</Label>
+              <Input
+                type="text"
+                id="todo-description"
+                name="idno"
+                value={this.state.activeItem.idno}
+                onChange={this.handleChange}
+                placeholder="Enter Todo description"
+              />
+            </FormGroup>
+            <FormGroup>
+              <Label for="todo-id">Your date of Birth.</Label>
+              <Input
+                type="text"
+                id="todo-description"
+                name="dob"
+                value={this.state.activeItem.dob}
+                onChange={this.handleChange}
+                placeholder="Enter dob"
+              />
+            </FormGroup>
+            <FormGroup>
+              <Label for="todo-id">Your Box.</Label>
+              <Input
+                type="text"
+                id="todo-description"
+                name="box"
+                value={this.state.activeItem.box}
+                onChange={this.handleChange}
+                placeholder="Enter box"
+              />
+            </FormGroup>
+            <FormGroup>
+              <Label for="todo-id">Your County.</Label>
+              <Input
+                type="text"
+                id="todo-description"
+                name="county"
+                value={this.state.activeItem.county}
+                onChange={this.handleChange}
+                placeholder="Enter county"
+              />
+            </FormGroup>
+            <FormGroup>
+              <Label for="todo-id">Your date of Town.</Label>
+              <Input
+                type="text"
+                id="todo-description"
+                name="town"
+                value={this.state.activeItem.town}
+                onChange={this.handleChange}
+                placeholder="Enter town"
+              />
+            </FormGroup>
+            <FormGroup>
+              <Label for="todo-id">Your mobile Number.</Label>
+              <Input
+                type="text"
+                id="todo-description"
+                name="mobile"
+                value={this.state.activeItem.mobile}
+                onChange={this.handleChange}
+                placeholder="Enter mobile Number"
+              />
             </FormGroup>
           </Form>
-        </ModalBody>
-        <ModalFooter>
+        
           <Button
             color="success"
-            onClick={() => onSave(this.state.activeItem)}
+            onClick={() => this.handleSubmit(this.state.activeItem)}
           >
             Save
           </Button>
-        </ModalFooter>
-      </Modal>
+          </div>
     );
   }
 }
