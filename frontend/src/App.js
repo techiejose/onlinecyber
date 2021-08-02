@@ -1,86 +1,88 @@
-import React, { Component } from "react";
-import Modal from "./components/Modal";
-import Pin from "./components/Pin";
-import axios from "axios";
+import logo from './logo.svg';
+import Home from './components/Home';
+import Business from './components/Business';
+import License from './components/License';
+import Wedding from './components/Wedding';
+import Poster from './components/Poster';
+import Blog from './components/Blog';
+import Pin from './components/Pin';
+import Reachus from './components/Reachus';
+import React, { useState } from 'react';
+import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
 
-class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      viewCompleted: false,
-      todoList: [],
-      modal: false,
-      activeItem: {
-        title: "",
-        description: "",
-        completed: false,
-      },
-    };
-  }
-
-  componentDidMount() {
-    this.refreshList();
-  }
-
-  refreshList = () => {
-    axios
-      .get("/api/todos/")
-      .then((res) => this.setState({ todoList: res.data }))
-      .catch((err) => console.log(err));
-  };
-
-  toggle = () => {
-    this.setState({ modal: !this.state.modal });
-  };
-
-  handleSubmit = (item) => {
-    this.toggle();
-
-    if (item.id) {
-      axios
-        .put(`/api/todos/${item.id}/`, item)
-        .then((res) => this.refreshList());
-      return;
+function App() {
+    const [show, setShow] = useState(false);
+    const showDropdown = (e)=>{
+        setShow(!show);
     }
-    axios
-      .post("/api/todos/", item)
-      .then((res) => this.refreshList());
-  };
-
-  handleDelete = (item) => {
-    axios
-      .delete(`/api/todos/${item.id}/`)
-      .then((res) => this.refreshList());
-  };
-
-  createItem = () => {
-    
-
-    this.setState({  modal: !this.state.modal });
-  };
-
-  editItem = (item) => {
-    this.setState({ activeItem: item, modal: !this.state.modal });
-  };
-
-  
-
-  render() {
+    const hideDropdown = e => {
+        setShow(false);
+    }
     return (
-      <main className="container">
-       
-          <Modal
-            activeItem={this.state.activeItem}
-            toggle={this.toggle}
-            onSave={this.handleSubmit}
-          />
+        <div>
+             <Router>
+      <Navbar bg="primary" variant="dark"expand="lg"className="nav">
         
-         
-      </main>
-      
-    );
-  
-  }
+      <Navbar.Brand>
+      <img src={logo} width="40px"height="40px"/> 
+    </Navbar.Brand>
+    <Navbar.Toggle/>
+    <Navbar.Collapse>
+    <Nav className="centerdiv">
+    <Nav.Link as={Link} to={""} className="spacing">Home </Nav.Link>
+    <Nav.Link as={Link} to={"registerkra"} className="spacing">Kra Pin </Nav.Link>
+    <Nav.Link as={Link} to={"license"} className="spacing">License </Nav.Link>
+    <NavDropdown title="Designs"show={show}
+   onMouseEnter={showDropdown} 
+   onMouseLeave={hideDropdown}className="spacing"> 
+    <NavDropdown.Item href="business">business Cards </NavDropdown.Item>
+    <NavDropdown.Item href="wedding">Wedding Cards </NavDropdown.Item>
+    <NavDropdown.Item href="poster">Poster </NavDropdown.Item>
+    </NavDropdown>
+    <Nav.Link as={Link} to={"contactus"} className="spacing">Contact Us </Nav.Link>
+    <Nav.Link as={Link} to={"blog"} className="spacing">Blog </Nav.Link>
+   
+    </Nav>
+    </Navbar.Collapse>
+    
+      </Navbar>
+      <div>
+      <Switch>
+          <Route exact path="/">
+            <Home />
+          </Route>
+          <Route exact path="/registerkra">
+            <Pin />
+          </Route>
+          <Route exact path="/wedding">
+            <Wedding />
+            </Route>
+            <Route exact path="/poster">
+            <Poster/>
+          </Route>
+          <Route exact path="/contactus">
+            <Reachus/>
+          </Route>
+          <Route path="/business">
+            <Business />
+          </Route>
+          <Route path="/license">
+            <License />
+          </Route>
+          <Route path="/blog">
+            <Blog />
+          </Route>
+        </Switch>
+      </div>
+      </Router>
+        </div>
+    )
 }
 
-export default App;
+export default App
