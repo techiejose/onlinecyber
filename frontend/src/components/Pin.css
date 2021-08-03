@@ -1,0 +1,15 @@
+@media (min-width:1025px) {
+    .pin{
+    text-align: left;
+    margin-left: 10%;
+    }
+     /* big landscape tablets, laptops, and desktops */ }
+     .pin{
+        text-align: left;
+        }
+        @media (min-width:320px)  { 
+            .pin{
+            margin-left: 5%; 
+            margin-right:5% ;
+        }
+            /* smartphones, Android phones, landscape iPhone */ }

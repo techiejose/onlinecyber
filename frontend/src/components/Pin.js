@@ -7,7 +7,7 @@ import {
   Label,
 } from "reactstrap";
 import axios from "axios";
-
+import './Pin.css';
 
 export default class CustomModal extends Component {
   constructor(props) {
