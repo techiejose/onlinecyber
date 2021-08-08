@@ -1,37 +1,90 @@
-import React from 'react'
-import { Form,Button } from 'react-bootstrap';
+import {
+  Button,
+  Form,
+  FormGroup,
+  Input,
+  Label,
+  
+} from "reactstrap";
+import axios from "axios";
+import React, { Component } from 'react'
 
-
-function Reachus() {
+export class Wedding extends Component {
+  constructor(props) {
+    super(props)
+  
+    this.state = {
+        activeItem: {
+          names: "",
+          idno: "",
+          message: "",
+          mobile: "",
+          jobtype: "Contact us"
+          
+        }
+    }};
+    
+    handleChange = (e) => {
+      let { name, value } = e.target;
+  
+      if (e.target.type === "checkbox") {
+        value = e.target.checked;
+      }
+  
+      const activeItem = { ...this.state.activeItem, [name]: value };
+      this.setState({ activeItem });    
+    };
+    refreshList = () => {
+      axios
+        .get("/api/job/")
+        .then((res) => this.setState({ todoList: res.data }))
+        .catch((err) => console.log(err));
+    };
+    handleSubmit = (item) => {
+        
+      axios
+        .post("/api/job/", item)
+        .then((res) => this.refreshList());
+    };
+  render() {
     return (
-        <div className="col-lg-4 ml-auto pin">
+      <div>
+        <div className="col-lg-8 ml-auto pin">
             <h4>Contact Us</h4>  
             <p>
-            Anything you want to enquire from us? send us a message by filling your details below.</p>
+            Anything you want to enquire from us? send us a message by filling your details below.
+           </p>
             <Form>
-  <Form.Group controlId="formBasicEmail">
-    <Form.Label>Your Names</Form.Label>
-    <Form.Control type="email" placeholder="Enter your names" />
-  </Form.Group>
+  <FormGroup>
+    <Label>Your Names</Label>
+    <Input type="text" placeholder="Enter your names"name="names" onChange={this.handleChange} value={this.state.activeItem.names} required/>
+  </FormGroup>
 
-  <Form.Group controlId="formBasicPassword">
-    <Form.Label>Email.</Form.Label>
-    <Form.Control type="password" placeholder="Enter email address" />
-  </Form.Group>
-  <Form.Group controlId="formBasicPassword">
-    <Form.Label>Phone number.</Form.Label>
-    <Form.Control type="password" placeholder="Enter your Phone number" />
-  </Form.Group>
-  <Form.Group controlId="formBasicPassword">
-    <Form.Label>Your message.</Form.Label>
-    <textarea className="form-control" placeholder="Type your message" id="exampleFormControlTextarea1" rows="5"></textarea>
-  </Form.Group>
-  <Button variant="primary"className="mt-2" type="submit">
+  <FormGroup>
+    <Label>ID No.</Label>
+    <Input type="text" placeholder="Enter ID number" onChange={this.handleChange} name="idno" value={this.state.activeItem.idno} required/>
+  
+    </FormGroup>
+  
+  <FormGroup>
+    <Label>phone number.</Label>
+    <Input type="text" placeholder="Enter your Phone number"name="mobile" onChange={this.handleChange} value={this.state.activeItem.mobile} required />
+  </FormGroup>
+  <FormGroup>
+  <FormGroup>
+    <Label >Your message.</Label>
+    <textarea className="form-control" placeholder="Enter your message"name="message" onChange={this.handleChange} value={this.state.activeItem.message} required ></textarea>
+  </FormGroup> 
+    <Input type="hidden" placeholder="Enter your Phone number"name="jobtype" onChange={this.handleChange} value={this.state.activeItem.jobtype} required />
+    </FormGroup>
+<Button color="primary"className="mt-2" type="submit" onClick={() => this.handleSubmit(this.state.activeItem)}>
     Submit
-  </Button>
+  </Button>  
   </Form>
-  </div>
+        </div>
+      </div>
     )
+  }
 }
 
-export default Reachus
+export default Wedding

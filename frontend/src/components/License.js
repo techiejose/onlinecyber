@@ -1,62 +1,80 @@
-import { Form,Button } from 'react-bootstrap';
+import {
+  Button,
+  Form,
+  FormGroup,
+  Input,
+  Label,
+} from "reactstrap";
 import axios from "axios";
 import React, { Component } from 'react'
 
 export class License extends Component {
-  state = {
-    details: [],
-    names: "",
-    id: "",
-    phone: "",
-};
-handleInput = (e) => {
-  this.setState({
-      [e.target.name]: e.target.value,
-  });
-};
-handleSubmit = (e) => {
-  e.preventDefault();
-
-  axios
-      .post("http://localhost:8000/cyberonline/", {
-          names: this.state.names,
-          id: this.state.id,
-          phone: this.state.phone,
-      })
-      .then((res) => {
-          this.setState({
-              names: "",
-              id: "",
-              phone: "",
-          });
-      })
-      .catch((err) => {});
-};
+  constructor(props) {
+    super(props)
+  
+    this.state = {
+        activeItem: {
+          names: "",
+          idno: "",
+          message: "",
+          mobile: "",
+          jobtype: "license application"
+          
+        }
+    }};
+    
+    handleChange = (e) => {
+      let { name, value } = e.target;
+  
+      if (e.target.type === "checkbox") {
+        value = e.target.checked;
+      }
+  
+      const activeItem = { ...this.state.activeItem, [name]: value };
+      this.setState({ activeItem });    
+    };
+    refreshList = () => {
+      axios
+        .get("/api/job/")
+        .then((res) => this.setState({ todoList: res.data }))
+        .catch((err) => console.log(err));
+    };
+    handleSubmit = (item) => {
+        
+      axios
+        .post("/api/job/", item)
+        .then((res) => this.refreshList());
+    };
   render() {
     return (
       <div>
-        <div className="col-lg-4 ml-auto pin">
+        <div className="col-lg-8 ml-auto pin">
             <h4>License</h4>  
             <p>
             fill your details in the form below, send Ksh 200 and we will call you so that we may confirm some details from you, process yor request and send you the renewal copy once we receive 
             yor payment</p>
             <Form>
-  <Form.Group controlId="formBasicEmail">
-    <Form.Label>Your Names</Form.Label>
-    <Form.Control type="text" placeholder="Enter your names"name="names" onChange={this.handleInput} value={this.state.names} required/>
-  </Form.Group>
+  <FormGroup>
+    <Label>Your Names</Label>
+    <Input type="text" placeholder="Enter your names"name="names" onChange={this.handleChange} value={this.state.activeItem.names} required/>
+  </FormGroup>
 
-  <Form.Group controlId="formBasicPassword">
-    <Form.Label>ID No.</Form.Label>
-    <Form.Control type="text" placeholder="Enter ID number" onChange={this.handleInput} name="id" value={this.state.id} required/>
-  </Form.Group>
-  <Form.Group controlId="formBasicPassword">
-    <Form.Label>Phone number.</Form.Label>
-    <Form.Control type="text" placeholder="Enter your Phone number"name="phone" onChange={this.handleInput} value={this.state.phone} required />
-  </Form.Group>
-  <Button variant="primary"className="mt-2" type="submit">
+  <FormGroup>
+    <Label>ID No.</Label>
+    <Input type="text" placeholder="Enter ID number" onChange={this.handleChange} name="idno" value={this.state.activeItem.idno} required/>
+  
+    </FormGroup>
+  <FormGroup>
+    <Label>phone number.</Label>
+    <Input type="text" placeholder="Enter your Phone number"name="mobile" onChange={this.handleChange} value={this.state.activeItem.mobile} required />
+  </FormGroup>
+  <FormGroup>
+    
+    <Input type="hidden" placeholder="Enter your Phone number"name="jobtype" onChange={this.handleChange} value={this.state.activeItem.jobtype} required />
+    </FormGroup>
+<Button color="primary"className="mt-2" type="submit" onClick={() => this.handleSubmit(this.state.activeItem)}>
     Submit
-  </Button>
+  </Button>  
   </Form>
         </div>
       </div>

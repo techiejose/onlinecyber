@@ -52,7 +52,7 @@ export default class CustomModal extends Component {
   };
   render() {
     return (
-      <div className="col-lg-4 mr-auto pin">
+      <div className="col-lg-8 mr-auto pin">
          <h4>KRA Pin</h4>  
          <p>
          fill yor details in the form below, send Ksh 200 and we will process yor request once we receive 
@@ -62,8 +62,9 @@ export default class CustomModal extends Component {
               <Label for="todo-title">Your Names</Label>
               <Input
                 type="text"
+                required
                 id="todo-title"
-                name="names"
+                name="names" 
                 value={this.state.activeItem.names}
                 onChange={this.handleChange}
                 placeholder="Enter Todo Title"
@@ -78,7 +79,7 @@ export default class CustomModal extends Component {
                 value={this.state.activeItem.profession}
                 onChange={this.handleChange}
                 placeholder="Enter Todo description"
-              />
+              required/>
             </FormGroup>
             <FormGroup>
               <Label for="todo-id">Your Id No.</Label>
@@ -86,6 +87,7 @@ export default class CustomModal extends Component {
                 type="text"
                 id="todo-description"
                 name="idno"
+                required
                 value={this.state.activeItem.idno}
                 onChange={this.handleChange}
                 placeholder="Enter Todo description"
@@ -97,6 +99,7 @@ export default class CustomModal extends Component {
                 type="text"
                 id="todo-description"
                 name="dob"
+                required
                 value={this.state.activeItem.dob}
                 onChange={this.handleChange}
                 placeholder="Enter dob"
@@ -108,6 +111,7 @@ export default class CustomModal extends Component {
                 type="text"
                 id="todo-description"
                 name="box"
+                required
                 value={this.state.activeItem.box}
                 onChange={this.handleChange}
                 placeholder="Enter box"
@@ -120,6 +124,7 @@ export default class CustomModal extends Component {
                 id="todo-description"
                 name="county"
                 value={this.state.activeItem.county}
+                required
                 onChange={this.handleChange}
                 placeholder="Enter county"
               />
@@ -132,6 +137,7 @@ export default class CustomModal extends Component {
                 name="town"
                 value={this.state.activeItem.town}
                 onChange={this.handleChange}
+                required
                 placeholder="Enter town"
               />
             </FormGroup>
@@ -142,18 +148,17 @@ export default class CustomModal extends Component {
                 id="todo-description"
                 name="mobile"
                 value={this.state.activeItem.mobile}
+                required
                 onChange={this.handleChange}
                 placeholder="Enter mobile Number"
               />
             </FormGroup>
+            <Button color="primary"className="mt-2"  onClick={() => this.handleSubmit(this.state.activeItem)} type="submit">
+Submit
+</Button>
           </Form>
-        
-          <Button
-            color="success"
-            onClick={() => this.handleSubmit(this.state.activeItem)}
-          >
-            Save
-          </Button>
+         
+          
           
           </div>
          
